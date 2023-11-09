@@ -1,0 +1,17 @@
+-- '2023-01-01'
+
+SELECT DATE_FORMAT('2023-01-01','%D %M %Y');  -- 1st January 2023
+SELECT DATE_FORMAT('2023-01-01','%D %b');  -- 1st Jan
+SELECT DATE_FORMAT('2023-01-01','%b %Y');  -- Jan 2023
+SELECT DATE_FORMAT('2023-01-01','%b');  -- Jan
+SELECT DATE_FORMAT('2023-01-01','%M');  -- January
+SELECT DATE_FORMAT('2023-01-01','%e/%c %Y');  -- 1/1/2023
+SELECT DATE_FORMAT('2023-01-01','%d/%m/%Y');  -- 01/01/2023
+
+
+SELECT DATE_FORMAT(NOW(),'%D %M %Y');  -- 12th September 2023
+SELECT DATE_FORMAT(NOW(),'%D %b');  -- 12th Sep
+SELECT DATE_FORMAT(NOW(),'%b %Y');  -- Sep 2023
+SELECT DATE_FORMAT(NOW(),'%b');  -- September
+SELECT DATE_FORMAT(NOW(),'%M');  -- September
+SELECT DATE_FORMAT(NOW(),'%e/%c %Y');  -- 1/1/2023
