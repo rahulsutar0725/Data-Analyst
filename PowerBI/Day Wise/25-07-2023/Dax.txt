@@ -1,0 +1,58 @@
+Sumx = SUMX(Sales_data,Sales_data[Order Quantity]*Sales_data[Unit Price])
+
+CrossFilter = CALCULATE(sum(Product_data[List Price]),
+            CROSSFILTER(Sales_data[ProductKey],Product_data[ProductKey],Both)
+                       )
+
+calculate = CALCULATE(sum(Sales_data[Sales Amount]),
+                'Sales Territory_data'[Country]="France")
+
+
+Calculate all = CALCULATE(sum(Sales_data[ResellerKey]),
+                 all(Date_data[Date].[Year]),filter('Sales Territory_data','Sales Territory_data'[Country]
+
+
+
+Related = CALCULATE(sum(Sales_data[Sales Amount]),
+FILTER(Sales_data,Sales_data[OrderDateKey]>20190301
+               &&
+               RELATED('Sales Territory_data'[Country])="France"))
+
+Filter Function = 
+CALCULATE(sum(Sales_data[Sales Amount]),
+                filter('Sales Territory_data' ,'Sales Territory_data'[Country]="France"
+                || 'Sales Territory_data'[Country]="Germany"))
+
+ProfitRatio = 
+VAR Profit=Sum(Sales_data[Sales Amount])-sum(Sales_data[Total Product Cost]) 
+Return 
+divide(profit,sum(Sales_data[Sales Amount]),0)
+
+3DMA = 
+
+VAR DATE_Filter = DATESINPERIOD('Date'[Date],MAX('Date'[Date]),-3,DAY)
+VAR Rolling_mean = CALCULATE(
+    AVERAGEX(
+        VALUES('Date'[Date]),
+        [sum_of_sales]),
+    DATE_Filter)
+RETURN Rolling_mean
+
+Cumulative Sales = IF('Measure Table'[TotalSales] <> BLANK(),
+CALCULATE('Measure Table'[TotalSales],FILTER(ALL('Date'),'Date'[Date] <= MAX('Date'[Date]))))
+
+Moving Average = CALCULATE(SUM(order2017[Sales]),DATESINPERIOD('Date'[Date],LASTDATE('Date'[Date]),3,DAY))
+/
+CALCULATE(DISTINCTCOUNT('Date'[Date]),DATESINPERIOD('Date'[Date],LASTDATE('Date'[Date]),3,DAY))
+
+
+%Profit Margin = 
+VAR D =SUM(order2017[Sales])
+VAR N = sum(order2017[Profit])
+RETURN DIVIDE(N,D)
+
+
+
+
+
+

@@ -1,0 +1,57 @@
+desktop  Visualization
+1 Stacked Bar Chart          1 Text 1 Numerical
+2 Stacked Column Chart       1 Text 1 Numerical
+3 Cluster Bar Chart          2 Text 1 Numerical
+4 Cluster Column Chart       2 Text 1 Numerical
+5 100% Stacked Bar Chart     2 Text 1 Numerical with 100% distribution
+6 100% Stacked Column Chart  2 Text 1 Numerical with 100% distribution
+7 Line Chart                 1 Numerical 1 Date
+8 Area Chart                 1 Numerical 1 text 1 Date (Overlaping of area)
+9 Stacked Area Chart         1 Numerical 1 text 1 Date (No overlaping/Seperate Area)
+10 Line-Stacked Column Chart/Dual Axis 2 Numerical 1 Text
+11 Line-Cluster Column Chart 2 Numerical 2 Text
+12 Ribbon Chat               1 text 1 Numerical 1 Date
+13 Pie Chart                 1 Text 1 Numerical
+14 Donut Chart               1 text 1 Numerical
+15 Waterfall Chart           1 text 1 Numerical 1  date for breakdown
+16 Funnel Chart              1 Text(more than 4 distribution) 1 Numerical 
+17 Scatter Chart             2 Numerical 1 Text(more distribution) 1 (Y,M,D)
+18 Tree Map                  1 Text(more distribution) 1 numerical  Data
+File-options & Settings-Security-Check Map and Filled Map
+19 Symbol Map                1 Location 1 Numerical (Big Size -more small size less  Value)
+20 Filled Map                2 Location 1 Numerical
+21 Single Card               Text/Numerical/Date any one aggregate Values
+22 Gauge Chart               Total Values(Numerical Values)
+23 Multiple Card             1 Text(More then 3 distribution) 2 or more numerical Data
+24 Slicer                    text 2 or more than 2 values
+25 Sync Slicer               Apply Slicer on multiple pages
+26 Group
+27 Conditional Formatting  background Colour,Text Colur,Icon,Data Bars
+28 Matrix Table
+29 Filters             1 Visual Filter
+                       2 Page Filter
+                       3 Report Filter
+30 Drillthrough        add same fields on multiple pages 
+31 Hierarchy           Higher-Lower
+32  Text Box 
+32 Web URL
+33 Images and Shapes
+34 create New Table  Create data
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
