@@ -1,0 +1,109 @@
+Sub messagebox()
+'This is used to create pop up written with message'
+
+'MsgBox "Welcome all", 1'
+'MsgBox "Welcome all", 2'
+'MsgBox "Welcome all", 3'
+'MsgBox "Welcome all", 4'
+'MsgBox "Welcome all", 5'
+MsgBox "Welcome all", vbYesNo
+
+End Sub
+
+
+ Sub if_condition_1()
+ 'This is used to write if condition is True'
+
+ If Range("A2").Value >= 35 Then
+ Range("B2").Value = "Pass"
+ End If
+ 
+ End Sub
+
+ Sub if_else_condition_1()
+ 'This is used to write if condition is true or false'
+ If Range("A2").Value >= 35 Then
+ Range("B2").Value = "Pass"
+ Else
+  Range("B2").Value = "Fail"
+ End If
+ 
+ End Sub
+
+
+ Sub input_1()
+ 'This is used to show the values enter by user'
+ Value = InputBox("Please enter the values")
+ MsgBox ("The entered value is" + Value)
+ 
+ End Sub
+
+Sub if_else_condition_messagebox()
+ 'This is used to write if condition is true or false'
+ Value = InputBox("Please enter the values")
+ MsgBox ("Your Score" + Value)
+ If Value >= 35 Then
+ MsgBox ("Congratulation!!!You Passed")
+ 
+ Else
+ 
+ MsgBox ("Unfortunately,You Failed the exam")
+ 
+ End If
+ 
+ End Sub
+
+Sub SerialNumber()
+'This is used to write numbers from 1 to 10'
+Range("A1").Value = 1
+Range("A2").Value = 2
+Range("A3").Value = 3
+Range("A4").Value = 4
+Range("A5").Value = 5
+Range("A6").Value = 6
+Range("A7").Value = 7
+Range("A8").Value = 8
+Range("A9").Value = 9
+Range("A10").Value = 10
+
+End Sub
+Sub Insert_Serial_Number()
+'This is used to enter number using for loop
+Dim i As Integer
+    For i = 1 To 100
+        Cells(i, 1).Value = i
+    Next i
+    
+    
+End Sub
+
+Function Add(x As Integer, y As Integer) As Integer
+'This is used to add three numbers given by user'
+
+Add = x + y
+
+End Function
+
+
+
+Function AddTwoNumbers(x As Integer, y As Integer) As Integer
+
+AddTwoNumbers = x + y
+
+End Function
+Function power_1(x As Integer, y As Integer) As Integer
+power_1 = x * y
+End Function
+
+
+Private Sub commandbutton_Click()
+Dim Yourname As String, JoiningDay As Date, income As Currency
+Yourname = "Dipti Sinha"
+JoiningDay = "1-1-2022"
+income = 10000
+Range("A1") = Yourname
+Range("A2") = JoiningDay
+Range("A3") = income
+End Sub
+
+
