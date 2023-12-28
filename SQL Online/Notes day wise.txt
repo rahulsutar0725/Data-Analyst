@@ -1,0 +1,1341 @@
+
+
+	...............................Day2.............................................
+	Date: 05-07-2023
+
+	Schemas: Schemas are nothing but database.
+
+	ORACLE: Schemas referse to user
+
+	drop schema is used to remove databse hr,student,etc
+
+	in mysql max number of colmun 4096
+
+	create database hr; # we created a databse called hr
+	create 
+	database 
+	student;
+	use hr;    #connect to hr database
+	/*
+	DDL (DATA DEFINATION LANGUAGE)
+	CREATE
+	ALTER
+	add
+	modify
+	rename
+	drop
+	RENAME
+	DROP
+	_______________ 
+
+
+	create a table 3 columns --> one alter to drop the the three columns (INTERVIEW QUESTION)
+
+	*/
+
+	#drop database hr;
+
+	create table employees (empid int, name varchar(20),doj date); #max column 4096
+	alter table employees add phone_no char(10);
+	alter table employees add (mail_id varchar(33),salary int); #method 1
+	alter table employees add mail_id varchar(33), add salary int; #method 2
+	describe employees;   # metadata --> data about data
+
+
+	#change the data type
+	alter table employees modify phone_no int;
+
+	#write a query to change the datatype of name column to int and salary column to varchar(22) with one alter
+	alter table employees modify name int, modify salary varchar(22);
+
+	#change the name of column
+	alter table employees rename column empid to empno;
+	desc employees;
+
+	#remove the unwanted column
+	alter table employees drop name;
+	alter table employees drop column salary, drop column phone_no;
+
+	# rename the table name
+	rename table employees to emp_info;
+
+	#delete the table
+	DROP TABLE EMP_INFO;
+
+	show tables;
+	varchar varchar2  --> ORACLE
+
+
+
+	9130503578  -->integer --> number ? (808)-123-2432
+
+	+91
+
+
+	rahul  --> char  | varchar (variable character)
+				256  | 65535   --> 
+						rahul123 --> string text -->varchar
+						
+	name char(40) --> rahul  --> RS123
+	name varchar(40)                  
+
+	123  -->int
+	05-july-2023 -->date 
+	...............................HomeWork.............................................
+	create a table 3 columns --> one alter to drop the the three columns (INTERVIEW QUESTION)
+	Ans: 
+		 We can not perfrom the alter operation on all the columns of table.
+
+	...............................Day3.............................................
+	Date: 06-07-2023
+	
+	
+	use hr;
+	create table employees (empid int, name varchar(20), doj date);
+	/*
+	DML (DATA MANIPULATION LANGUAGE)
+	INSERT
+	UPDATE
+	DELETE
+	*/
+
+	insert into employees values(1,'Rahul','2023-07-06');#yyyy-mm-dd
+	insert into employees(name,doj,empid) values('Alex',current_date(),2);
+	insert into employees(name,empid,doj) values('Rohan',3,'2012-09-10');
+	insert into employees (empid, name) values(4,'Rohit'); # null empty
+	insert into employees values(5,'shivraj',null);#
+	insert into employees values(6,'Allen','2014-08-09'),(7,'Dev',current_date());
+	select * from employees;
+
+	update employees set name='Shiva' where empid=1;
+	update employees set name='Nair' where empid>3;#multiple rows
+	update employees set doj='2023-01-23', name='Alexa' where empid=2;
+	update employees set name='Alean'; # it affects all the rows of name
+	select * from employees;
+
+	delete from employees where empid=2; # 1 row
+	delete from employees where empid>4; #multiple row
+	delete from employees; #all rows
+
+	/*
+	drop     vs     delete
+	ddl             dml
+	which of the above can be easily undone? -->delete
+
+	*/
+
+	select * from employees;
+
+	/*
+	TCL (TRANSACTION CONTROL LANGUAGE) -->DML's (I U D)
+	COMMIT   --> ctrl+s
+	ROLLBACK --> ctrl+z
+	SAVEPOINT -->
+	*/
+
+	rollback;
+	select * from employees;
+
+	rollback;
+	set autocommit=0; # 0 is disable 1 for enable
+	insert into employees values(1,'Rahul','2023-07-06');#yyyy-mm-dd
+	commit;
+	insert into employees(name,doj,empid) values('Alex',current_date(),2);
+	rollback; # till last commit time of the session
+
+
+
+	set sql_safe_updates=0; # 0 means disable 1 means enable
+
+
+	select * from employees; #select cpmmand is used to display | * is used to display all the columns of the table only once
+
+	describe employees;
+
+	select name,doj from employees;
+
+	show tables;
+	...............................HomeWork.............................................
+	home work
+	sample
+
+	sid        name        loc
+	1		  'Rahul'      locA
+	2         'Rohit'      loc a
+	3         'Rohan'      loc d
+
+	delete all the rows from the name column
+	
+	Ans: -
+	
+	create database homeworkday3;
+	use homeworkday3;
+	create table sample (sid int, name varchar(20), loc varchar(30));
+	describe sample;
+	insert into sample (sid,name,loc) values(1,'Rahul','locA');
+	insert into sample values(2,'Rohit','loc a'),(3,'Rohan','loc d');
+	select * from sample;
+
+	update sample set name='';
+	select * from sample;
+	
+	OUTPUT:
+	sid        name        loc
+	1		               locA
+	2         	           loc a
+	3         		       loc d
+	
+	
+	...............................Day4.............................................
+	Date: 07-07-2023
+	
+	use hr;
+	show tables;
+	select * from employees;
+	insert into employees values(2,'Rohit',current_date());
+	insert into employees values(3,'Rohan',current_date());
+	/*
+	TCL (TRANSACTION CONTROL LANGUGE) -->DML's(I U D)
+
+	COMMIT; -->SAVE
+	ROLLBACK; --> UNDO
+	SAVEPOINT; --> logical markers | controls the scope of rollback
+	*/
+	ROLLBACK; 
+	set autocommit=0;
+	ROLLBACK;
+	delete from employees;
+	ROLLBACK;
+	insert into employees values(4,'sam',null);
+	rollback;
+	insert into employees values(4,'sam',null);
+	commit;
+	rollback;
+
+	select * from employees;
+	#4 rows
+	delete from employees where empid=1; #3 rows remaining after this line
+	savepoint a1;
+	delete from employees where empid=2; #2rows remaining after this line
+	savepoint a2;
+	delete from employees where empid=3; #1 rows remaining after this line
+	savepoint a3;
+	delete from employees where empid=4; #0 rows remaining after this line
+	savepoint a4;
+
+	select * from employees;
+	rollback to savepoint a4; #0 rows
+	rollback to savepoint a3; #1 rows
+	rollback to savepoint a1; #3 rows
+	rollback to savepoint a1; #error --> savepoint does not exist
+	#########################################################################
+	select * from employees;
+	delete from employees;#all
+	rollback;
+	truncate table employees; #(DDL WHY?) DROP CREATE | TRUNCATE is used to delete all the rows from the table
+	rollback;
+
+	###############################################################################
+	/*
+	RULES ON DATA -->CONSTRAINTS
+	UNIQUE
+	NOT NULL
+	PRIMARY KEY (U+NN)
+	CHECK (CONDITION)
+	FOERIGN KEY | REFERENCE KEY
+
+	DELETE
+	on delete set null --> whenever a parent row is deleted the associated child values is setted to NULL.
+
+	on delete cascade --> whenever a parent row is deleted the associated child rows are also deleted.
+
+	UPDATE
+	on update cascade --> whenever a parent row is updated the associated child values are also updated with the new
+	on update set null --> whenever a parent row is updated the associated child rows are setted to null
+
+	*/
+	...............................Day5.............................................
+	Date: 10-07-2023
+	
+	use hr;
+	drop table employees;
+	############################## on delete set null/on update cascade ############################
+	create table departments(deptno int primary key,dname varchar(22) not null);
+	create table employees
+	(
+	empno int primary key,
+	name varchar(22) not null,
+	salary int check(salary>0),
+	deptid int,
+	foreign key (deptid) references departments(deptno) on delete set null on update cascade);
+
+	insert into departments values(10,'sales');
+	insert into departments values(20,'Hr');
+
+	insert into employees values(101,'Renu',1000,20);
+	insert into employees values(102,'Alex',4000,10);
+	insert into employees values(103,'Allen',3400,20);
+	select * from employees;
+	delete from departments where deptno=10;
+	update departments set deptno=33 where deptno=20;
+
+	################################# on delete cascade/on update set null #######################
+	drop table employees;
+	drop table departments;
+	create table departments(deptno int primary key,dname varchar(22) not null);
+	create table employees
+	(
+	empno int primary key,
+	name varchar(22) not null,
+	salary int check(salary>0),
+	deptid int,
+	foreign key (deptid) references departments(deptno) on delete cascade on update set null);
+	insert into departments values(10,'sales');
+	insert into departments values(20,'Hr');
+
+	insert into employees values(101,'Renu',1000,20);
+	insert into employees values(102,'Alex',4000,10);
+	insert into employees values(103,'Allen',3400,20);
+	select * from employees;
+
+	delete from departments where deptno=10;
+	update departments set deptno=33 where deptno=20;
+
+
+	# col unique ---> 1 null , 2 null --> 
+	
+	###################################################day5_2#########################################################
+	
+	/*
+	DQL (DATA QUERY LANGUAGE)
+	SELECT -->TO DISPLAY
+	COLUMN alias
+	*/
+	USE scott;
+	show tables;
+	select * from emp; # all the columns of the table only once
+	select ename,sal from emp;
+	desc emp;
+
+	select ename,hiredate,sal, sal-100 from emp; # expression
+
+	#display the name job and annual salary of all employees
+
+	select ename,job,sal*12 from emp;
+
+	#display the name job and annual salary of all employees after a deduction of 100 only once
+
+	select ename,job,(sal*12)-100 from emp;
+
+	#display the name job and annual salary of all employees after a deduction of 100 only every month
+	select ename,job,(sal-100)*12 from emp;
+
+	select ename as name,job,sal*12 as Annual_Income from emp;#changing the colmun name
+	select ename as name, job, sal as Monthly$Salary from emp; # only $ and _ is used to space
+	select ename as name, job, sal as "Monthly Salary" from emp;
+
+	select 'Rahul' as name;
+
+	select 23*23;
+
+	#name salary amt_paid balance_amt
+
+	select ename as name, sal as monthly_salary,100 as amt_paid, sal-100 as balance_amt from emp;
+
+	...............................Day6.............................................
+	Date: 11-07-2023
+	
+	use scott;
+	select distinct deptno from emp;
+	select distinct job from emp;
+	select distinct deptno,job from emp;
+
+	select ename,sal,comm, sal+ifnull(comm,0) as total_income from emp;
+	select ename,sal,comm from emp;
+	select comm,ifnull(comm,0) from emp;
+	select * from emp;
+
+	/*
+	SELECT [DISTINCT] *, column_name|expressions [[as] alias]
+	[FROM table]
+	[WHERE CONDITION(S)];
+	comparision operator =,>,<,<>,!=,>=,<=
+
+	1>0 TRUE(YES)
+	*/
+
+	SELECT * FROM EMP WHERE ENAME='SCOTT';
+	SELECT * FROM EMP WHERE sal=1250;
+	SELECT * FROM EMP WHERE sal>2000;
+	select * from emp where job ='clerk';
+	select * from emp where deptno<>30;
+
+	/*
+	like
+	% -->zero or more characters
+	_ -->only one character
+	*/
+
+	#display those employees whos name starts with an s
+	select * from emp where ename like 's%';
+
+	#display those employees whos name ends with s
+	select * from emp where ename like '%s';
+
+	#contains s
+	select * from emp where ename like '%s%';
+
+	#display those employees whos name contain atleast two a
+	select * from emp where ename like '%a%a%';
+
+	#display that employees name who has an I in the third position
+	select * from emp where ename like '__i%';
+
+	#display that employees whos name contain e in the second last position
+	select * from emp where ename like '%e_';
+
+	#display all comm value equal to null
+	select ename,sal,comm from emp where comm is null;
+
+	select * from emp where ename in ('smith','scott');
+
+
+	#display those employees who are working as clerk and salesman
+	select * from emp where job in ('clerk','salesman');
+
+	#sal values in between 1250 - 3000   --> between and --> Range of values
+	select	* from emp where sal between 1250 and 3000;
+
+	/*
+	Homework
+	1)display the name of that employee whos name start with j and ends with s
+	2)display the details of those employees who were hired in December(functions not allowed)
+	3)employees who gets commision
+	*/
+	#.......................... IN NOT ALLOWED
+	/*
+	LOGICAL OPERATOR
+	AND -- BOTH THE CONDITION MUST BE TRUE
+	OR -- ANYONE CONDITION IS TRUE
+	not *
+	*/
+
+	select * from emp where job='clerk' and deptno=20;
+
+	#DISPLAY THOSE EMPLOYEES WHO ARE WORKING AS CLERK AND SALESMAN 
+	select * from emp where job='clerk' or job='salesman';
+
+	#DISPLAY THOSE EMPLOYEES WHO ARE WORKING AS CLERK AND SALESMAN  but display only those who's salary
+	# is more than 1000
+	select * from emp where (job='clerk' or job='salesman') and sal>1000;
+	select * from emp where sal>1000 and (job='clerk' or job='salesman');
+
+	select * from emp where (job='clerk' and sal>1000) or (job='salesman' and sal>1000);
+	...................................HomeWork......................................................
+
+	/*
+		Homework
+		1)display the name of that employee whos name start with j and ends with s
+		2)display the details of those employees who were hired in December(functions not allowed)
+		3)employees who gets commision
+	*/
+	# 1)display the name of that employee whos name start with j and ends with s
+	select ename from emp where ename like 'j%s';
+	#2)display the details of those employees who were hired in December(functions not allowed)
+	select * from emp where hiredate like '%-12-%';
+	#3)employees who gets commision
+	select * from emp where comm>0;
+	................................................................................................
+
+	#12-07-2023
+	# NOT
+
+	#display those employees whos name not starts with an s
+	select * from emp where ename not like 's%';
+
+	select * from emp where deptno not in(10,20);
+	select * from emp where comm is not null;
+	select * from emp where sal not between 1250 and 3000;
+	select * from emp where deptno not in(10,20);
+
+	...............................Day7.............................................
+	use scott;
+	/*
+	SELECT [DISTINCT]*,column_name | expressions [[as] alias]
+	[FROM table]
+	[WHERE CONDITION(S)];
+	[ORDER BY column_name,ALIAS,column position number {asc(default)| des}]
+	LIMIT [number of rows to be ignored], number of rows to be displayed;
+	1>0 TRUE(YES)
+	*/
+
+	select ename, sal from emp
+	order by sal asc;
+
+	select ename, sal from emp
+	order by sal desc;
+
+	select ename, sal from emp
+	order by ename asc;
+
+	select ename, sal from emp
+	order by ename desc;
+
+	select ename as name, sal as salary from emp
+	order by sal asc;
+
+	select ename,sal,hiredate from emp
+	order by 3;
+
+	select deptno,sal from emp order by deptno asc, sal desc;
+
+	select * from emp order by comm asc; -- nulls are at top
+	select ename,comm,isnull(comm) from emp order by 3 asc, comm asc; 
+	select ename,comm,isnull(comm) from emp order by isnull(comm) asc, comm asc; #no
+
+	-- CASE
+	/*
+	If ELSE
+	CLERK 100
+	SALESMAN 200
+	MANAGER  300
+	*/
+	SELECT ENAME, SAL AS OLD_SAL,
+	CASE JOB
+	WHEN 'clerk' then sal+100
+	WHEN 'salesman' then sal+200
+	WHEN 'manager' then sal+300
+	else sal
+	END as new_sal,job from emp;
+
+	/*
+	>=3000 Grade A
+	2000 2999 Grade B
+	<1999 Grade C
+	*/
+
+	select ename,sal,
+	case
+	when sal>= 3000 then 'Grade A'
+	when sal between 2000 and 2999 then 'Grade B'
+	when sal<=1999 then 'Grade C'
+	end as status from emp;
+
+	-- LIMIT [number of rows to be ignored], number of rows to be displayed;
+	select ename,sal from emp order by sal desc limit 1;
+
+	select ename, sal from emp order by sal desc limit 3;
+
+	#first hired salesman
+	select ename,job,hiredate from emp where job='salesman' order by hiredate asc limit 1;
+
+	#second hired salesman
+	select ename,job,hiredate from emp where job='salesman' order by hiredate asc limit 1,1;
+
+	#display the 2nd highest paid employee
+	select ename,sal from emp order by sal desc limit 1,1;
+
+	/*
+	STRING FUNCTIONS 
+	DATE FUNCTIONS
+	NUMBER FUNCTIONS
+	AGGREGATE FUNCTIONS -- SUM,MIN,MAX,AVG,COUNT
+	WINDOW FUNCTION | ANALYTICAL FUNCTIONS --> RANK, DENSE_RANK
+	*/
+
+	-- AGGREGATE FUNCTIONS | GROUP FUNCTIONS --> ONE RESULT PER SET OF ROWS
+
+	SELECT MIN(SAL) FROM EMP;
+	SELECT MAX(SAL) FROM EMP;
+	SELECT MIN(ENAME),MAX(ENAME) FROM EMP;
+	SELECT MIN(HIREDATE),MAX(HIREDATE) FROM EMP;
+
+	select sum(sal) as total,avg(sal) from emp;
+	select min(sal) from emp;
+	select count(empno) from emp;
+	select count(comm) from emp;
+	select count(*) from emp;
+	select count(distinct deptno) from emp;
+
+	...............................Day7.............................................
+	13-07-2023
+		
+		
+	/*
+	sum(),avg(),count(),min(),max()
+	*/
+	use scott;
+	select max(sal),deptno from emp
+	group by deptno;
+
+	#find the total employees working in each job
+	/*
+	select count(empno) as total,job 
+	from emp
+	where count(empno)>3
+	group by job; -->error
+	*/
+
+	select count(empno) as total,job 
+	from emp
+	group by job
+	having count(empno)>3;
+
+	#find the number of employees and total salry in department no 10 and 20 but display only that
+	#department were the total salary is more than 9600 (do not use comm)
+
+	select deptno,count(empno) as totalemp,sum(sal) as totalsal 
+	from emp
+	group by deptno 
+	having deptno in(10,20) and totalsal>9600;
+	#or
+	select count(empno),sum(sal)
+	from emp
+	group by deptno 
+	having sum(sal)>9600;
+
+	################# JOINS  ##################################
+
+	/* 
+	TYPE OF JOINS
+	INNER JOIN
+	LEFT JOIN
+	RIGHT JOIN
+	CROSS JOIN
+	FULL JOIN
+	FULL OUTER JOIN
+
+	SELF JOIN
+	*/
+
+	/*
+	INNER JOIN : COMMON DATA | rows that satisfies the given condition
+	OUTER JOIN : inner join + unmatched rows
+	LEFT OUTER JOIN | LEFT JOIN : inner join + unmatched rows from left table 
+	RIGHT OUTER JOIN | RIGHT JOIN : inner join + unmatched rows from right table
+
+	FULL OUTER JOIN | FULL JOIN: inner join + unmatched rows rows from both the table
+
+	CROSS JOIN
+	*/
+	#Homework
+	#display the employees name and their department_name
+	# that city name were we do not have any departments
+
+	
+	select ename as name, loc,e.deptno from emp as e join dept as d on(e.deptno=d.deptno);
+	show tables;
+
+	#EMPOYEES WHO DO NOT WORKING IN ANY DEPARTMENTS:
+	select ename as name,dname from dept as d right join emp as e on(e.deptno=d.deptno);
+	select ename as name,dname from emp as e left join dept as d on(e.deptno=d.deptno);
+	select ename as name,dname from dept as d right join emp as e on(e.deptno=d.deptno) where dname is null;
+	/*
+	SELECT COLUMN_NAME,COLUMN_NAME
+	FROM <TABLE1> JOIN <TABLE2>
+	ON(JOIN CONDITION);
+	*/
+
+	use world;
+	select name,language from country join countrylanguage on(code=countrycode) 
+	where name='india';
+	/*
+	command line
+	Enter password: *****
+	Welcome to the MySQL monitor.  Commands end with ; or \g.
+	Your MySQL connection id is 15
+	Server version: 8.0.29 MySQL Community Server - GPL
+
+	Copyright (c) 2000, 2022, Oracle and/or its affiliates.
+
+	Oracle is a registered trademark of Oracle Corporation and/or its
+	affiliates. Other names may be trademarks of their respective
+	owners.
+
+	Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+	mysql> USE SCOTT;
+	Database changed
+	mysql> select * from emp;
+	+-------+--------+-----------+------+------------+------+------+--------+
+	| EMPNO | ENAME  | JOB       | MGR  | HIREDATE   | SAL  | COMM | DEPTNO |
+	+-------+--------+-----------+------+------------+------+------+--------+
+	|  7369 | SMITH  | CLERK     | 7902 | 1980-12-17 |  800 | NULL |     20 |
+	|  7499 | ALLEN  | SALESMAN  | 7698 | 1981-02-20 | 1600 |  300 |     30 |
+	|  7521 | WARD   | SALESMAN  | 7698 | 1981-02-22 | 1250 |  500 |     30 |
+	|  7566 | JONES  | MANAGER   | 7839 | 1981-04-02 | 2975 | NULL |     20 |
+	|  7654 | MARTIN | SALESMAN  | 7698 | 1981-09-28 | 1250 | 1400 |     30 |
+	|  7698 | BLAKE  | MANAGER   | 7839 | 1981-05-01 | 2850 | NULL |     30 |
+	|  7782 | CLARK  | MANAGER   | 7839 | 1981-06-09 | 2450 | NULL |     10 |
+	|  7788 | SCOTT  | ANALYST   | 7566 | 1982-12-09 | 3000 | NULL |     20 |
+	|  7839 | KING   | PRESIDENT | NULL | 1981-11-17 | 5000 | NULL |     10 |
+	|  7844 | TURNER | SALESMAN  | 7698 | 1980-09-08 | 1500 |    0 |     30 |
+	|  7876 | ADAMS  | CLERK     | 7788 | 1983-01-12 | 1100 | NULL |     20 |
+	|  7900 | JAMES  | CLERK     | 7698 | 1981-12-03 |  950 | NULL |     30 |
+	|  7902 | FORD   | ANALYST   | 7566 | 1981-12-03 | 3000 | NULL |     20 |
+	|  7934 | MILLER | CLERK     | 7782 | 1982-01-23 | 1300 | NULL |     10 |
+	+-------+--------+-----------+------+------------+------+------+--------+
+	14 rows in set (0.00 sec)
+
+	mysql> select * from dept;
+	+--------+------------+----------+
+	| DEPTNO | DNAME      | LOC      |
+	+--------+------------+----------+
+	|     10 | ACCOUNTING | NEW YORK |
+	|     20 | RESEARCH   | DALLAS   |
+	|     30 | SALES      | CHICAGO  |
+	|     40 | OPERATIONS | BOSTON   |
+	+--------+------------+----------+
+	4 rows in set (0.01 sec)
+
+	mysql> select ename, loc from emp join dept on(deptno=deptno);
+	ERROR 1052 (23000): Column 'deptno' in on clause is ambiguous
+	mysql> select ename as name, loc from emp as e join dept as d on(e.deptno=d.deptno);
+	+--------+----------+
+	| name   | loc      |
+	+--------+----------+
+	| SMITH  | DALLAS   |
+	| ALLEN  | CHICAGO  |
+	| WARD   | CHICAGO  |
+	| JONES  | DALLAS   |
+	| MARTIN | CHICAGO  |
+	| BLAKE  | CHICAGO  |
+	| CLARK  | NEW YORK |
+	| SCOTT  | DALLAS   |
+	| KING   | NEW YORK |
+	| TURNER | CHICAGO  |
+	| ADAMS  | DALLAS   |
+	| JAMES  | CHICAGO  |
+	| FORD   | DALLAS   |
+	| MILLER | NEW YORK |
+	+--------+----------+
+	14 rows in set (0.00 sec)
+
+	mysql> use world;
+	Database changed
+	mysql> show tables;
+	+-----------------+
+	| Tables_in_world |
+	+-----------------+
+	| city            |
+	| country         |
+	| countrylanguage |
+	+-----------------+
+	3 rows in set (0.00 sec)
+
+	mysql> desc country;
+	+----------------+---------------------------------------------------------------------------------------+------+-----+---------+-------+
+	| Field          | Type                                                                                  | Null | Key | Default | Extra |
+	+----------------+---------------------------------------------------------------------------------------+------+-----+---------+-------+
+	| Code           | char(3)                                                                               | NO   | PRI |         |       |
+	| Name           | char(52)                                                                              | NO   |     |         |       |
+	| Continent      | enum('Asia','Europe','North America','Africa','Oceania','Antarctica','South America') | NO   |     | Asia    |       |
+	| Region         | char(26)                                                                              | NO   |     |         |       |
+	| SurfaceArea    | float(10,2)                                                                           | NO   |     | 0.00    |       |
+	| IndepYear      | smallint                                                                              | YES  |     | NULL    |       |
+	| Population     | int                                                                                   | NO   |     | 0       |       |
+	| LifeExpectancy | float(3,1)                                                                            | YES  |     | NULL    |       |
+	| GNP            | float(10,2)                                                                           | YES  |     | NULL    |       |
+	| GNPOld         | float(10,2)                                                                           | YES  |     | NULL    |       |
+	| LocalName      | char(45)                                                                              | NO   |     |         |       |
+	| GovernmentForm | char(45)                                                                              | NO   |     |         |       |
+	| HeadOfState    | char(60)                                                                              | YES  |     | NULL    |       |
+	| Capital        | int                                                                                   | YES  |     | NULL    |       |
+	| Code2          | char(2)                                                                               | NO   |     |         |       |
+	+----------------+---------------------------------------------------------------------------------------+------+-----+---------+-------+
+	15 rows in set (0.01 sec)
+
+	mysql> desc countrylanguage;
+	+-------------+---------------+------+-----+---------+-------+
+	| Field       | Type          | Null | Key | Default | Extra |
+	+-------------+---------------+------+-----+---------+-------+
+	| CountryCode | char(3)       | NO   | PRI |         |       |
+	| Language    | char(30)      | NO   | PRI |         |       |
+	| IsOfficial  | enum('T','F') | NO   |     | F       |       |
+	| Percentage  | float(4,1)    | NO   |     | 0.0     |       |
+	+-------------+---------------+------+-----+---------+-------+
+	4 rows in set (0.00 sec)
+
+	mysql> select name,language from country join countrylanguage on(code=countrycode) where name='india';
+	+-------+-----------+
+	| name  | language  |
+	+-------+-----------+
+	| India | Asami     |
+	| India | Bengali   |
+	| India | Gujarati  |
+	| India | Hindi     |
+	| India | Kannada   |
+	| India | Malajalam |
+	| India | Marathi   |
+	| India | Orija     |
+	| India | Punjabi   |
+	| India | Tamil     |
+	| India | Telugu    |
+	| India | Urdu      |
+	+-------+-----------+
+	12 rows in set (0.01 sec)
+
+	mysql> select name,cl.language from country c inner join countrylanguage cl on(c.code=cl.countrycode) where c.name='india';
+	+-------+-----------+
+	| name  | language  |
+	+-------+-----------+
+	| India | Asami     |
+	| India | Bengali   |
+	| India | Gujarati  |
+	| India | Hindi     |
+	| India | Kannada   |
+	| India | Malajalam |
+	| India | Marathi   |
+	| India | Orija     |
+	| India | Punjabi   |
+	| India | Tamil     |
+	| India | Telugu    |
+	| India | Urdu      |
+	+-------+-----------+
+	12 rows in set (0.00 sec)
+
+	mysql> use scott;
+	Database changed
+	mysql> select * from dept;
+	+--------+------------+----------+
+	| DEPTNO | DNAME      | LOC      |
+	+--------+------------+----------+
+	|     10 | ACCOUNTING | NEW YORK |
+	|     20 | RESEARCH   | DALLAS   |
+	|     30 | SALES      | CHICAGO  |
+	|     40 | OPERATIONS | BOSTON   |
+	+--------+------------+----------+
+	4 rows in set (0.00 sec)
+
+	mysql> select dname,ename from emp e join dept d on(e.deptno<>d.deptno);
+	+------------+--------+
+	| dname      | ename  |
+	+------------+--------+
+	| OPERATIONS | SMITH  |
+	| SALES      | SMITH  |
+	| ACCOUNTING | SMITH  |
+	| OPERATIONS | ALLEN  |
+	| RESEARCH   | ALLEN  |
+	| ACCOUNTING | ALLEN  |
+	| OPERATIONS | WARD   |
+	| RESEARCH   | WARD   |
+	| ACCOUNTING | WARD   |
+	| OPERATIONS | JONES  |
+	| SALES      | JONES  |
+	| ACCOUNTING | JONES  |
+	| OPERATIONS | MARTIN |
+	| RESEARCH   | MARTIN |
+	| ACCOUNTING | MARTIN |
+	| OPERATIONS | BLAKE  |
+	| RESEARCH   | BLAKE  |
+	| ACCOUNTING | BLAKE  |
+	| OPERATIONS | CLARK  |
+	| SALES      | CLARK  |
+	| RESEARCH   | CLARK  |
+	| OPERATIONS | SCOTT  |
+	| SALES      | SCOTT  |
+	| ACCOUNTING | SCOTT  |
+	| OPERATIONS | KING   |
+	| SALES      | KING   |
+	| RESEARCH   | KING   |
+	| OPERATIONS | TURNER |
+	| RESEARCH   | TURNER |
+	| ACCOUNTING | TURNER |
+	| OPERATIONS | ADAMS  |
+	| SALES      | ADAMS  |
+	| ACCOUNTING | ADAMS  |
+	| OPERATIONS | JAMES  |
+	| RESEARCH   | JAMES  |
+	| ACCOUNTING | JAMES  |
+	| OPERATIONS | FORD   |
+	| SALES      | FORD   |
+	| ACCOUNTING | FORD   |
+	| OPERATIONS | MILLER |
+	| SALES      | MILLER |
+	| RESEARCH   | MILLER |
+	+------------+--------+
+	42 rows in set (0.00 sec)
+
+	mysql> select dname,ename from emp e right outer join dept d on(e.deptno=d.deptno);
+	+------------+--------+
+	| dname      | ename  |
+	+------------+--------+
+	| ACCOUNTING | MILLER |
+	| ACCOUNTING | KING   |
+	| ACCOUNTING | CLARK  |
+	| RESEARCH   | FORD   |
+	| RESEARCH   | ADAMS  |
+	| RESEARCH   | SCOTT  |
+	| RESEARCH   | JONES  |
+	| RESEARCH   | SMITH  |
+	| SALES      | JAMES  |
+	| SALES      | TURNER |
+	| SALES      | BLAKE  |
+	| SALES      | MARTIN |
+	| SALES      | WARD   |
+	| SALES      | ALLEN  |
+	| OPERATIONS | NULL   |
+	+------------+--------+
+	15 rows in set (0.00 sec)
+
+	mysql> select dname,ename from emp e right join dept d on(e.deptno=d.deptno);
+	+------------+--------+
+	| dname      | ename  |
+	+------------+--------+
+	| ACCOUNTING | MILLER |
+	| ACCOUNTING | KING   |
+	| ACCOUNTING | CLARK  |
+	| RESEARCH   | FORD   |
+	| RESEARCH   | ADAMS  |
+	| RESEARCH   | SCOTT  |
+	| RESEARCH   | JONES  |
+	| RESEARCH   | SMITH  |
+	| SALES      | JAMES  |
+	| SALES      | TURNER |
+	| SALES      | BLAKE  |
+	| SALES      | MARTIN |
+	| SALES      | WARD   |
+	| SALES      | ALLEN  |
+	| OPERATIONS | NULL   |
+	+------------+--------+
+	15 rows in set (0.00 sec)
+
+	mysql> select dname,ename from emp e right join dept d on(e.deptno=d.deptno) where ename is null;
+	+------------+-------+
+	| dname      | ename |
+	+------------+-------+
+	| OPERATIONS | NULL  |
+	+------------+-------+
+	1 row in set (0.00 sec)
+
+	mysql> insert into emp(empno,ename) values (1,'Rahul');
+	Query OK, 1 row affected (0.02 sec)
+
+	mysql> select * from dept;
+	+--------+------------+----------+
+	| DEPTNO | DNAME      | LOC      |
+	+--------+------------+----------+
+	|     10 | ACCOUNTING | NEW YORK |
+	|     20 | RESEARCH   | DALLAS   |
+	|     30 | SALES      | CHICAGO  |
+	|     40 | OPERATIONS | BOSTON   |
+	+--------+------------+----------+
+	4 rows in set (0.00 sec)
+
+	mysql> select * from emp;
+	+-------+--------+-----------+------+------------+------+------+--------+
+	| EMPNO | ENAME  | JOB       | MGR  | HIREDATE   | SAL  | COMM | DEPTNO |
+	+-------+--------+-----------+------+------------+------+------+--------+
+	|  7369 | SMITH  | CLERK     | 7902 | 1980-12-17 |  800 | NULL |     20 |
+	|  7499 | ALLEN  | SALESMAN  | 7698 | 1981-02-20 | 1600 |  300 |     30 |
+	|  7521 | WARD   | SALESMAN  | 7698 | 1981-02-22 | 1250 |  500 |     30 |
+	|  7566 | JONES  | MANAGER   | 7839 | 1981-04-02 | 2975 | NULL |     20 |
+	|  7654 | MARTIN | SALESMAN  | 7698 | 1981-09-28 | 1250 | 1400 |     30 |
+	|  7698 | BLAKE  | MANAGER   | 7839 | 1981-05-01 | 2850 | NULL |     30 |
+	|  7782 | CLARK  | MANAGER   | 7839 | 1981-06-09 | 2450 | NULL |     10 |
+	|  7788 | SCOTT  | ANALYST   | 7566 | 1982-12-09 | 3000 | NULL |     20 |
+	|  7839 | KING   | PRESIDENT | NULL | 1981-11-17 | 5000 | NULL |     10 |
+	|  7844 | TURNER | SALESMAN  | 7698 | 1980-09-08 | 1500 |    0 |     30 |
+	|  7876 | ADAMS  | CLERK     | 7788 | 1983-01-12 | 1100 | NULL |     20 |
+	|  7900 | JAMES  | CLERK     | 7698 | 1981-12-03 |  950 | NULL |     30 |
+	|  7902 | FORD   | ANALYST   | 7566 | 1981-12-03 | 3000 | NULL |     20 |
+	|  7934 | MILLER | CLERK     | 7782 | 1982-01-23 | 1300 | NULL |     10 |
+	|     1 | Rahul  | NULL      | NULL | NULL       | NULL | NULL |   NULL |
+	+-------+--------+-----------+------+------------+------+------+--------+
+	15 rows in set (0.00 sec)
+
+	mysql> select ename as name,dname from emp as e left outer join dept as d on(e.deptno=d.deptno);
+	+--------+------------+
+	| name   | dname      |
+	+--------+------------+
+	| SMITH  | RESEARCH   |
+	| ALLEN  | SALES      |
+	| WARD   | SALES      |
+	| JONES  | RESEARCH   |
+	| MARTIN | SALES      |
+	| BLAKE  | SALES      |
+	| CLARK  | ACCOUNTING |
+	| SCOTT  | RESEARCH   |
+	| KING   | ACCOUNTING |
+	| TURNER | SALES      |
+	| ADAMS  | RESEARCH   |
+	| JAMES  | SALES      |
+	| FORD   | RESEARCH   |
+	| MILLER | ACCOUNTING |
+	| Rahul  | NULL       |
+	+--------+------------+
+	15 rows in set (0.00 sec)
+
+	mysql> select ename as name,dname from emp as e right join dept as d on(e.deptno=d.deptno);
+	+--------+------------+
+	| name   | dname      |
+	+--------+------------+
+	| MILLER | ACCOUNTING |
+	| KING   | ACCOUNTING |
+	| CLARK  | ACCOUNTING |
+	| FORD   | RESEARCH   |
+	| ADAMS  | RESEARCH   |
+	| SCOTT  | RESEARCH   |
+	| JONES  | RESEARCH   |
+	| SMITH  | RESEARCH   |
+	| JAMES  | SALES      |
+	| TURNER | SALES      |
+	| BLAKE  | SALES      |
+	| MARTIN | SALES      |
+	| WARD   | SALES      |
+	| ALLEN  | SALES      |
+	| NULL   | OPERATIONS |
+	+--------+------------+
+	15 rows in set (0.00 sec)
+
+	mysql> select ename as name,dname from dept as e right join dept as d on(e.deptno=d.deptno);
+	ERROR 1054 (42S22): Unknown column 'ename' in 'field list'
+	mysql> select ename as name,dname from dept as d right join emp as e on(e.deptno=d.deptno);
+	+--------+------------+
+	| name   | dname      |
+	+--------+------------+
+	| SMITH  | RESEARCH   |
+	| ALLEN  | SALES      |
+	| WARD   | SALES      |
+	| JONES  | RESEARCH   |
+	| MARTIN | SALES      |
+	| BLAKE  | SALES      |
+	| CLARK  | ACCOUNTING |
+	| SCOTT  | RESEARCH   |
+	| KING   | ACCOUNTING |
+	| TURNER | SALES      |
+	| ADAMS  | RESEARCH   |
+	| JAMES  | SALES      |
+	| FORD   | RESEARCH   |
+	| MILLER | ACCOUNTING |
+	| Rahul  | NULL       |
+	+--------+------------+
+	15 rows in set (0.00 sec)
+
+	mysql> select ename as name,dname from dept as d right join emp as e on(e.deptno=d.deptno) where dname is null;
+	+-------+-------+
+	| name  | dname |
+	+-------+-------+
+	| Rahul | NULL  |
+	+-------+-------+
+	1 row in set (0.00 sec)
+
+	mysql>
+	*/
+	...............................Day10.............................................
+	17-07-2023
+	
+	/*INDEX*/
+	use scott;
+	select * from emp where ename="scott";
+	create index idf on emp(ename);#non unique
+
+	/*
+	primary key or unique
+	create
+	*/
+	select * from emp;
+	select count(distinct ename) from emp;
+	show indexes from emp;
+	alter table emp add primary key(empno);
+	create index idf2 on emp(job);
+	select distinct job from emp;
+
+	#alter table emp drop index idf2; #delete the index
+
+	show indexes from emp;
+	alter table emp add primary key(empno);
+	alter table emp drop index idf;
+	create unique index idf on emp(ename);
+	insert into emp(empno,ename) values (101,'SCOTT');#error
+	#create unique index idf2 on emp(ename,job); 
+
+	########################################################################################################
+
+	#sequence  --> 1,2...
+
+	create table sample_demo(sid int auto_increment primary key,sname varchar(22));
+	insert into sample_demo(sname) values ('sample1');
+	select * from sample_demo;
+	insert into sample_demo(sname) values('sample3');
+	delete from sample_demo where sid=1;
+	insert into sample_demo(sname) values(10,'sample4');#
+
+	create table sample_demo2(sid int auto_increment primary key,sname varchar(22));
+	alter table sample_demo2 auto_increment=101;
+	insert into sample_demo2(sname) values ('sample1');
+	select * from sample_demo2;
+	##################################################################
+
+	/*
+	view --> reporting | data hidding
+	group function,join group by, distinct --> COMPLEX VIEW --> DML's not allowed
+	if there is a select statment witout the above components then type of view is simple view.
+	in simple view DML's are allowed
+
+	*/
+	create view dept_info as
+	select count(empno) as emp_cnt,ifnull(sum(Sal),0) as total, dname
+	from emp e right outer join dept d on (e.deptno=d.deptno)
+	group by dname;
+
+	select * from dept_info;
+
+	create view emp_info as select empno,ename,deptno from emp where deptno=20;
+	select * from emp_info;
+	insert into emp_info values (101,'Alex',20);
+	insert into emp_info values (102,'Allena',30);#
+
+	select * from emp;
+	select * from dept_info;
+	/*
+	3 8750 Accounting
+	6 10875 Research
+	6 9400 Sales
+	0 0 Operations
+	*/
+	
+	...............................Day11.............................................
+	use scott;
+	/*
+	Types of subquery:
+	non correlated subquery
+	correlated subquery
+	*/
+
+	select * from emp;
+	select sal from emp where ename='scott';
+	#main query | outer query
+	select ename from emp where sal>(select sal from emp where ename='scott'); #subuery | inner query | nested query
+	select * from dept where deptno not in(select deptno from emp);
+	# display the name of managers (without using job column) to whom other employees report
+	select ename as manager_name from emp where empno in (select mgr from emp);
+	#14-6=8(simple employees)
+	select ename as not_a_manager from emp o where empno not in (select mgr from emp i where o.empno=i.mgr);
+
+	select ename from emp o where not exists(select mgr from emp i where o.empno=i.mgr);
+
+
+
+	/*
+	single row subquery: >,<,<>,=(stmt 10)
+	multi row subqery : in, not (stmt 13)
+	*/
+
+	insert into emp(empno,ename) values (1,'Rahul');
+	select * from emp;
+	select * from dept d where not exists ( select deptno from emp e where d.deptno=e.deptno);
+	select * from dept d where exists (select deptno from emp e where d.deptno=e.deptno);
+
+
+	/*ht:
+	1)display those employees who works in a job role same as smith but earns more than him
+	2) display an * in front of the name of that employee who was hired first.(select)
+	simth
+	allen
+	*miller
+	scott
+	king
+	turner
+	*/
+	select ename,job,sal from emp where job=(select job from emp where ename='smith') and
+	sal>(select sal from emp where ename='smith');
+
+	select case
+	when hiredate=(select min(hiredate) from emp) then concat("*",ename)
+	else ename
+	end as report
+	from emp;
+	...............................Day11_2.............................................
+	/*
+	functions : string function,number,date function, analytical functions
+	*/
+
+	select lower("RAHUL");
+	select upper('rahul');
+	select lower(ename),ename from emp;
+	select length(length('rahul')); # nesting of function
+
+	select max(min(sal)) from emp;
+	select max(min(sal)) from emp group by deptno; #oracle
+
+	select max(sal) from emp where sal in (select min(sal) from emp group by deptno);
+
+	...............................Day12.............................................
+	#19-07-2023
+	select substr('Rahul Sutar',1,2) as name; #Ra
+	select substr('Rahul Sutar',2,3) as name; #ahu
+	select substr('Rahul Sutar',7,3); #Sut
+	select substr('Rahul Sutar',11,1); #r
+	select substr('Rahul Sutar',-1,1); #r
+	select substr('Rahul Sutar',-3,2); #ta
+	select substr('Rahul Sutar',1) as name;
+	select right('Rahul',1);
+	select right('Rahul',2);
+	select left('Rahul',1);
+	select left('Rahul',3);
+	use scott;
+	select concat(ename,sal,hiredate) as report from emp;
+	select concat('renu',null);
+	#renu | RENU --> Renu --> 
+
+	select upper(left('renu',1)),lower(right('renu',length('renu')-1));
+	select ucase(left('renu',1)),lcase(substr('renu',2));
+	select concat(upper(left('rahul',1)),lower(right('rahul',length('rahul')-1))) as name;
+
+	select instr('canada','a'); #oracle
+	select replace('renu','r','z');
+	select replace('renu','r','l');
+	select reverse('renu');
+	select length('    hello     '); #all
+	select trim('    hello      ');
+	select length(ltrim('      hello      '));
+	select rtrim('      hello     ');
+
+	#display those employees whos name start with a (witout using like)
+	select ename from emp where left(ename,1)='a';
+
+	#display those employees whos name ends with a (witout using like)
+	select ename from emp where right(ename,1)='a';
+
+	select ename from emp where instr(ename,'a')<>0;
+
+	/*
+	ht:
+	1) display the name of that employee whos name end with a(use only instr)
+	2) display the data of that employees whos name start with a and end with n (using substr)
+	*/
+
+	####################################################################################################
+	select now();
+	select current_date();
+	select current_time();
+	select month(current_date()); #no value for month
+	select monthname(current_date()); #name of month
+	select year(current_date());
+	select dayname(current_date());
+	select day(current_date());
+	select ename,hiredate from emp where month(hiredate)=12;
+	select date_add(now(),interval '1' month);
+	select date_add(now(),interval '1' year);
+	select now(),date_add(now(),interval '1' day);
+	select now(),date_add(now(),interval '1' minute);
+	select now(),date_add(now(),interval '3' hour);
+	select date_sub(now(),interval '1' month);
+
+	insert into emp(empno,ename,hiredate) values(10,'alex',str_to_date('12-dec-2021','%d-%b-%Y'));#yyyy-mm-dd  |dd-mon-yyyy
+	select * from emp;
+	select date_format(now(),'%m'); # number value for month
+	select date_format(now(),'%M'); # spelled month name
+	select date_format(now(),'%y'); # 
+	select date_format(now(),'%Y'); # 4 digits of year
+	select date_format(now(),'%d');
+	select date_format(now(),'%D'); # Day of the month with English suffix (1st,2nd,3rd,4th....)
+	select date_format(now(),'%b'); # 3 letters for month
+	select date_format(now(),'%a'); # 3 letters for weekday name
+	select date_format(now(),'%W');
+	select date_format(now(),'%w');
+
+	...............................Day13.............................................
+
+	use scott;
+
+	/*
+	66.5 -->67, 66.3 --> 66 66.5 -->67
+	range
+	5-9 --->+1
+	0-4 --->+0
+	*/
+
+	select round(1234.546,2); #1234.55
+	select round(1234.546,1); #1234.5
+	select round(1234.546,0); #1235
+	select round(1234.546); #Default 0
+	select truncate(1234.546,2);#1234.54
+	select truncate(1234.546,1);#1234.5
+	select truncate(1234.546,0);#1234
+	select truncate(1234.546);#error  |trunc()
+	select mod(2,2),2%2,2/2;#0 0 1.0000
+	select * from emp;
+	#analytical function | window functions
+	select rank() over(order by sal desc),ename,sal from emp;
+	select rank() over(partition by deptno order by sal desc),ename,sal,deptno from emp;
+	#highest paid employee from each department
+	select dense_rank() over(partition by deptno order by sal desc),ename,sal,deptno from emp;
+
+	#inline view
+	select * from
+	(
+	select dense_rank() over(partition by deptno order by sal desc) as rank_value
+	,ename,sal,deptno from emp
+	)t1 where rank_value=1;
+
+	select lead(sal,1,0) over(order by sal) as next_value,ename,sal from emp;
+
+	select lag(sal,1,0) over(order by sal) as previous_value,ename,sal from emp where sal is not null;
+
+	delete from emp where sal is null;
+	select min(sal) from emp group by deptno;
+
+	select * from emp where deptno=10;
+
+	select lower(ename) from emp;
+
+	select min(sal) over(partition by deptno) as dept_min_sal,ename,sal,deptno from emp;
+
+	select row_number() over()as "row_id",ename,sal from emp;
+	
+	...............................Day14.............................................
+	
+	/*
+	triggers --> evoked when event happens (dml)
+
+	old-->old value
+	new--> new value
+
+	timing
+	before
+	afterbonus
+	*/
+	select * from emp;
+	create table job_history(empno int, job char(22),sal int, deptno int);
+	select * from job_history;
+	update emp set job='salesman',sal=2000 where empno=7369;
+	use scott;
+	set sql_safe_updates=0;
+	select * from medicines;
+	select * from orders;
+	update medicines set qty=100;
+	/*
+	whenever the qty goes below 20 then order
+	qty<20
+
+	update medicines
+	*/
+	update medicines set qty=40 where med_id=101;
+	select * from medicines;
+	select * from orders;
+	update medicines set qty=19 where med_id=101;
+
+	/*
+	audit
+
+	emp -->audit_table(username,action_name,action_time,old_sal_value,new_sal_value);
+	*/
+	select * from emp;
+
+	create table audit_table(username char(33),action_name char(12), action_time datetime,
+								old_sal_value int, new_sl_value int);
+	select user();
+	SELECT * FROM AUDIT_TABLE;
+	DELETE FROM EMP WHERE EMPNO=7369;
+	UPDATE EMP SET SAL=3400 WHERE ENAME='SCOTT';
+
+	/*
+	Functions
+	*/
+
+	select cube_no(3);
+	select cube_no(sal) from emp;
+	select * from emp;
+	select proper(ename),ename from emp;

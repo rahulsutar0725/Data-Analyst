@@ -1,0 +1,226 @@
+  Tableau Products
+1 Tableau Desktop
+	1 free trial for 14days Tableau Desktop Profesional
+	2 Tableau Students (Valid Student ID) 1 Year
+2 Tableau Server - Server databases
+3 Tableau Online - online Cloud Data
+4 Tableau Prep Builder - ETL Tool Extract Tranform Load
+5 Tableau Reader - (only read mode can't do any changes)
+6 Tableau Public - Sales Dashboard-DiptiSinha (not support multiples files).
+
+
+Tableau Extension
+1 .twb 		Tableau Workbook (Data+Worksheets +Report+DashBoard)
+2 .twbx		Tableau packeged Workbook (Data+Worksheets+Report+Stories+DashBoard)
+3 .tds   	Tableau Data Source (only support to the tableau data soures file).
+4 .tdsx		Tableau Packaged Data Source
+5 .tde for older version / .hyper for new version (Tableau Data Extract),(create the sample file/sub file which limit the data).
+6 .tbm 		Tableau Bookmark (bookmarker file is used to copy the content/ format to other files).
+7 .tps 		Tableau Preference (create your own data like columns according to your preference).
+
+
+Tableau				 |	PowerBI
+---------------------+-----------------------------
+Tableau				 |	Microsoft
+24 Visuals			 |	40 visuals+250 more visuals
+BI					 |	BI
+Twb Twbx			 |	Pbix Pbit
+Tableau Server Data	 |	Get Data
+Fast Analytics Tool  |	Slow than Tableau
+---------------------------------------------------
+
+#Data Types in Tableau .......................
+
+1. String			Rahul,Rahul21,Rahul123!@#$%
+2. Numeric			25,-25,25.97,-25.97, 25%
+3. Date				01-01-2000
+4. Date and Time    01-01-2000 14:21:15
+5. Boolean   `		(T/F)
+6. Geographical		India, Maharashtra, New Delhi, 413221
+
+	Dimension		 		|    Measure
+----------------------------+---------------------
+1. Blue				 		|  Green
+2. Text Date         		|  Numeric
+3. Qualitative       		|  Quantitative
+4. Discrete			 		|  Continuous
+5. Aggregation Not Applied  |  Applied
+6. Name country date 		|  Sales marks salary
+7. Count count distint      |  Sum Avg Max 
+---------------------------------------------------
+Filters in Tableau
+1. Extract Filter
+2. Data Source Filter
+3. Context Filter
+4. Dimension Filter
+5. Measure Filter
+6. Quick Filter
+
+Calculated Field:-
+Cost=sum(sales)-sum(profit)
+
+.......................................09-08-2023.......................................
+
+Profit Status:
+
+Profit Status = IF SUM([Profit])>0 THEN "Profitable" ELSE "Non-Profitable" END
+
+Index:
+Index=INDEX()
+
+Top 2 Sub category:- 
+
+Category	Sub-Category
+Furniture			Chairs
+					Tables
+Office Supplies		Binders	
+					Storage
+Technology			Machines	
+					Phones	
+
+for this 
+
+create Calculated Field -> Top 2 Sub Category -> INDEX()<=2
+
+Filter-> Top 2 Sub Category -> True False -> True
+
+Filter -> Compute using -> Pane
+
+Sales		Previous		Next 		Moving/Rolling 		Cumulative
+  a 						 b				  a					a
+  b 			a			 c				a+b					a+b	
+  c				b			 d				b+c					a+b+c
+  d				c							c+d					a+b+c+d
+
+
+
+Previous Year Sales			LOOKUP(SUM([Sales]),-1)
+Next Year sales				LOOKUP(SUM([Sales]),1)
+Moving/Rolling				WINDOW_SUM(sum([Sales]),-1,0)
+Cumulative Sales			RUNNING_SUM(SUM([Sales]))
+
+
+
+			Rank	DenseRank
+	200		  1			1
+	250		  2			2
+	250		  2			2
+	250		  2			2
+	300		  5         3
+	
+Rank			RANK(SUM([Sales]))
+RANK_DENSE		RANK_DENSE(SUM([Sales]))
+
+...................10-08-2023.....................................
+
+LOD (Level of Detail) Expression
+1.Fixed
+2.Include
+3.Exclude
+
+Furniture
+Office Supply
+Technology
+
+		category		Sub			Region		Sales
+	1	   a			 b			  c
+	2	   d			 e			  f
+	3	   g			 h			  i
+	4	   j			 k			  l
+	
+Fixed LOD:
+
+	{Fixed[category]:SUM([sales])}
+
+Latest Order date:
+
+	{FIXED[Customer Name]:MAX([Order Date])}
+
+First Order date:
+
+	{FIXED[Customer Name]:MIN([Order Date])}
+
+Include LOD:
+	{INCLUDE[Customer Name]:SUM([Sales])}
+	
+Exclude LOD:
+	{EXCLUDE[Segment],[Region]:SUM([Sales])}
+	
+	
+Table Calculaion
+
+Category
+	20	21	22
+f	a	b	c
+OS	d	e	f
+T	g	h	i
+
+
+
+Joins in Tableau
+1 Inner Join
+2 Left Join
+3 Right Join
+4 Full Outer Join
+
+Employee ID      Name
+	1			 A
+	2			 B
+	3			 C
+	4			 D
+	5			 E
+	
+Department Table
+ID			Name			Employee ID
+101			P				3
+102			Q				5
+103			R				10
+104			S				2
+
+Inner Join			|	Left Join			|	Right Join			|	Full Join
+Name		Name	|	Name		Name	|	Name		Name	|	Name		Name
+  B			 S		|	  A			 Null	|	  C			 P		|	  A			 Null
+  C			 P		|	  B			 S		|	  E			 Q		|	  B			 S
+  E			 Q		|	  C			 P		|	  Null		 R		|	  C			 P
+					|	  D			 Null	|	  B			 S		|	  D			 Null
+					|	  E			 Q		|						|	  E			 Q
+					|						|						|	  Null		 R
+					
+					
+Joins
+Union
+Relationship
+Groups
+Sets
+Bins
+
+Name    Age
+A		20
+B		22
+C		18
+D		21
+E		16
+F		17
+G		21
+H		19
+
+
+Bins
+1	16-18
+2	18-20
+3	20-22
+
+      Join      Union                    Relationship       Blending
+1     Sheet    Data Source              Data Source      1 Data Source 2 Sheet
+2    Inner     Single Sheet Data       Multiple Files     Multiple Source with Sheet
+     Left 
+     Right
+     Full Outer
+3    Same For All Sheets  Same             same             Primary and Secoundy will Change Sheet Level
+
+
+
+Group      More Distribution to Less Distribution(Reduce Data)
+Set       2 values Together(Top & Bottom)
+Parameter Dynamic add custom List 
+Bin       Number
